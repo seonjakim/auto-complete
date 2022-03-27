@@ -1,6 +1,8 @@
 input {
   border: none;
   width: 100%;
+  font-size: 15px;
+  padding: 0 0.5em;
 }
 input:focus {
   outline: 0;
@@ -33,7 +35,7 @@ li {
   color: white;
 }
 #clear-button {
-  display: none;
+  visibility: hidden;
 }
 .auto-complete-input {
   position: relative;
