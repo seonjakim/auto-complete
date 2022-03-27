@@ -7,6 +7,12 @@ input {
 input:focus {
   outline: 0;
 }
+button {
+  border: 0;
+  padding: 0;
+  margin: 0;
+  background-color: transparent;
+}
 ul {
   list-style: none;
   padding: 0.5em;
@@ -35,6 +41,7 @@ li:hover {
   background-color: rgba(236, 236, 236, 0.5);
 }
 #clear-button {
+  height: 24px;
   visibility: hidden;
 }
 .auto-complete-input {
