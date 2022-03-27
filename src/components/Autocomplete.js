@@ -80,10 +80,12 @@ const Autocomplete = (settings) => {
   const clearEvent = () => {
     input.removeEventListener('keyup', startFetch)
     input.removeEventListener('keydown', keydownEventHandler)
+    input.removeEventListener('focusout', clear)
     clear()
   }
   input.addEventListener('keyup', startFetch)
   input.addEventListener('keydown', keydownEventHandler)
+  input.addEventListener('focusout', clear)
   return {
     clearEvent: clearEvent,
   }
