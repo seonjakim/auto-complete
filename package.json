@@ -1,0 +1,23 @@
+{
+  "name": "auto-complete",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "dependencies": {
+    "serve": "^13.0.2"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "start": "serve -l 3000"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/seonjakim/auto-complete.git"
+  },
+  "author": "",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/seonjakim/auto-complete/issues"
+  },
+  "homepage": "https://github.com/seonjakim/auto-complete#readme"
+}
