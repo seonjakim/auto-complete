@@ -1,4 +1,4 @@
-function Autocomplete(settings) {
+const Autocomplete = (settings) => {
   let input = settings.input
   let container = document.createElement('ul')
   let isSelected = false
@@ -6,12 +6,12 @@ function Autocomplete(settings) {
   let selected
   container.style.position = 'absolute'
 
-  function attachList() {
+  const attachList = () => {
     if (!container.parentNode) {
       document.body.appendChild(container)
     }
   }
-  function clear() {
+  const clear = () => {
     items = []
     selected = undefined
     const parent = container.parentNode
@@ -19,14 +19,14 @@ function Autocomplete(settings) {
       parent.removeChild(container)
     }
   }
-  function update() {
+  const update = () => {
     while (container.firstChild) container.removeChild(container.firstChild)
     const render = function (item) {
       const itemContainer = document.createElement('li')
       itemContainer.textContent = item || ''
       return itemContainer
     }
-    var fragment = document.createDocumentFragment()
+    let fragment = document.createDocumentFragment()
     items.forEach((item) => {
       const content = render(item)
       content.addEventListener('click', () => {
@@ -41,27 +41,27 @@ function Autocomplete(settings) {
     attachList()
   }
 
-  function startFetch() {
+  const startFetch = () => {
     if (isSelected) return (isSelected = false)
     settings.fetch(input.value, (elements) => {
       items = elements
       update()
     })
   }
-  function selectPrev() {
+  const selectPrev = () => {
     if (selected === items[0]) return (selected = items[items.length - 1])
     for (let i = items.length - 1; i > 0; i--) {
       if (selected === items[i] || i === 1) return (selected = items[i - 1])
     }
   }
-  function selectNext() {
+  const selectNext = () => {
     if (!selected || selected === items[items.length - 1])
       return (selected = items[0])
     for (let i = 0; i < items.length - 1; i++) {
       if (selected === items[i]) return (selected = items[i + 1])
     }
   }
-  function keydownEventHandler(e) {
+  const keydownEventHandler = (e) => {
     let keyCode = e.which || e.keyCode || 0
     if (keyCode === 38 || keyCode === 40) {
       let hasContainerElement = !!container.parentNode
@@ -77,7 +77,15 @@ function Autocomplete(settings) {
       clear()
     }
   }
+  const clearEvent = () => {
+    input.removeEventListener('keyup', startFetch)
+    input.removeEventListener('keydown', keydownEventHandler)
+    clear()
+  }
   input.addEventListener('keyup', startFetch)
   input.addEventListener('keydown', keydownEventHandler)
+  return {
+    clearEvent: clearEvent,
+  }
 }
 export default Autocomplete
