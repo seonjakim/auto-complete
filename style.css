@@ -16,9 +16,9 @@ ul {
   width: 100%;
   max-width: 300px;
   top: 40px;
+  border-radius: 4px;
 }
 li {
-  border: 1px solid #eee;
   padding: 0.5em;
   border-radius: 4px;
 }
@@ -30,9 +30,9 @@ li {
   border-radius: 4px;
   padding: 0.5em;
 }
-.selected {
-  background-color: red;
-  color: white;
+.selected,
+li:hover {
+  background-color: rgba(236, 236, 236, 0.5);
 }
 #clear-button {
   visibility: hidden;
