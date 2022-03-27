@@ -2,7 +2,7 @@ const Autocomplete = (settings) => {
   let input = settings.input
   let container = document.createElement('ul')
   let isSelected = false
-  let items = []
+  let listItems = []
   let selected
   container.style.position = 'absolute'
 
@@ -12,7 +12,7 @@ const Autocomplete = (settings) => {
     }
   }
   const clear = () => {
-    items = []
+    listItems = []
     selected = undefined
     const parent = container.parentNode
     if (parent) {
@@ -27,7 +27,7 @@ const Autocomplete = (settings) => {
       return itemContainer
     }
     const fragment = document.createDocumentFragment()
-    items.forEach((item) => {
+    listItems.forEach((item) => {
       const content = render(item)
       content.addEventListener('click', () => {
         settings.onSelect(item)
@@ -50,30 +50,32 @@ const Autocomplete = (settings) => {
   }
   const startFetch = ({ target }) => {
     if (isSelected) return (isSelected = false)
-    settings.fetch(target.value, (elements) => {
-      items = elements
+    settings.fetch(target.value, (titles) => {
+      listItems = titles
       update()
     })
   }
   const debouncedOnInput = debounce(startFetch)
   const selectPrev = () => {
-    if (selected === items[0]) return (selected = items[items.length - 1])
-    for (let i = items.length - 1; i > 0; i--) {
-      if (selected === items[i] || i === 1) return (selected = items[i - 1])
+    if (selected === listItems[0])
+      return (selected = listItems[listItems.length - 1])
+    for (let i = listItems.length - 1; i > 0; i--) {
+      if (selected === listItems[i] || i === 1)
+        return (selected = listItems[i - 1])
     }
   }
   const selectNext = () => {
-    if (!selected || selected === items[items.length - 1])
-      return (selected = items[0])
-    for (let i = 0; i < items.length - 1; i++) {
-      if (selected === items[i]) return (selected = items[i + 1])
+    if (!selected || selected === listItems[listItems.length - 1])
+      return (selected = listItems[0])
+    for (let i = 0; i < listItems.length - 1; i++) {
+      if (selected === listItems[i]) return (selected = listItems[i + 1])
     }
   }
   const keydownEventHandler = (e) => {
     let keyCode = e.keyCode
     if (keyCode === 38 || keyCode === 40) {
       let hasContainerElement = !!container.parentNode
-      if (!hasContainerElement || items.length < 1) return
+      if (!hasContainerElement || listItems.length < 1) return
       keyCode === 38 ? selectPrev() : selectNext()
       update()
       e.preventDefault()
