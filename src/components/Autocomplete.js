@@ -26,7 +26,7 @@ const Autocomplete = (settings) => {
       itemContainer.textContent = item || ''
       return itemContainer
     }
-    let fragment = document.createDocumentFragment()
+    const fragment = document.createDocumentFragment()
     items.forEach((item) => {
       const content = render(item)
       content.addEventListener('click', () => {
@@ -41,13 +41,21 @@ const Autocomplete = (settings) => {
     attachList()
   }
 
-  const startFetch = () => {
+  const debounce = (callback, ms = 500) => {
+    let timeout
+    return (argument) => {
+      clearTimeout(timeout)
+      timeout = setTimeout(() => callback(argument), ms)
+    }
+  }
+  const startFetch = ({ target }) => {
     if (isSelected) return (isSelected = false)
-    settings.fetch(input.value, (elements) => {
+    settings.fetch(target.value, (elements) => {
       items = elements
       update()
     })
   }
+  const debouncedOnInput = debounce(startFetch)
   const selectPrev = () => {
     if (selected === items[0]) return (selected = items[items.length - 1])
     for (let i = items.length - 1; i > 0; i--) {
@@ -62,7 +70,7 @@ const Autocomplete = (settings) => {
     }
   }
   const keydownEventHandler = (e) => {
-    let keyCode = e.which || e.keyCode || 0
+    let keyCode = e.keyCode
     if (keyCode === 38 || keyCode === 40) {
       let hasContainerElement = !!container.parentNode
       if (!hasContainerElement || items.length < 1) return
@@ -78,14 +86,14 @@ const Autocomplete = (settings) => {
     }
   }
   const clearEvent = () => {
-    input.removeEventListener('keyup', startFetch)
     input.removeEventListener('keydown', keydownEventHandler)
     input.removeEventListener('focusout', clear)
+    input.removeEventListener('input', debouncedOnInput)
     clear()
   }
-  input.addEventListener('keyup', startFetch)
   input.addEventListener('keydown', keydownEventHandler)
   input.addEventListener('focusout', clear)
+  input.addEventListener('input', debouncedOnInput)
   return {
     clearEvent: clearEvent,
   }
