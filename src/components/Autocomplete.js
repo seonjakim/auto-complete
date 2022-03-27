@@ -23,7 +23,7 @@ const Autocomplete = (settings) => {
     while (container.firstChild) container.removeChild(container.firstChild)
     const render = function (item) {
       const itemContainer = document.createElement('li')
-      itemContainer.textContent = item || ''
+      itemContainer.textContent = item
       return itemContainer
     }
     const fragment = document.createDocumentFragment()
